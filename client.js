@@ -1,19 +1,5 @@
 var Promise = TrelloPowerUp.Promise;
 
-var getBadges = function(t){
-  return t.card('desc').get('desc').then(function(cardDesc) {
-    var reg = reg = new RegExp('__Sprint spent__:\\s+(\\d+)h');
-    var match = reg.exec(cardDesc) || [];
-    var sprintSpent = match[1];
-    
-    return [{
-      title: 'Sprint spent: ' + sprintSpent,
-      text: 'Sprint spent: ' + sprintSpent
-    }];
-  });
-};
-
-// We need to call initialize to get all of our capability handles set up and registered with Trello
 TrelloPowerUp.initialize({
   'board-buttons': function(t, options){
     return {
@@ -28,6 +14,16 @@ TrelloPowerUp.initialize({
     };
   },
   'card-badges': function(t, options){
-    return getBadges(t);
+    return t.card('name', 'desc', 'members').then(function(card) {
+      var stat = new CardStat(card);
+
+      return [
+        {title: 'Sprint estimate', text: `Sprint estimate: ${stat.sprintEstimate}h`},
+        {title: 'Sprint spent', text: `Sprint spent: ${stat.sprintEstimate}h`},
+        {title: 'QA', text: `QA: ${stat.qaOwner}`},
+        {title: 'QA estimate', text: `QA: ${stat.qaEstimate}`},
+        {title: 'QA spent', text: `QA spent: ${stat.qaSpent}`},
+      ];
+    });
   }
 });
