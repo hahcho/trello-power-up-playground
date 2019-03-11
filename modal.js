@@ -16,6 +16,6 @@ t.render(function(){
           <td>${member.estimatedWork()}</td>
         </tr>
       `
-    }).join();
+    }).join('');
   });
 });
