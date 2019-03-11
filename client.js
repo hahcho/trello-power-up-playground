@@ -18,11 +18,8 @@ TrelloPowerUp.initialize({
       var stat = new CardStat(card);
 
       return [
-        {title: 'Sprint estimate', text: `Sprint estimate: ${stat.sprintEstimate}h`},
-        {title: 'Sprint spent', text: `Sprint spent: ${stat.sprintEstimate}h`},
-        {title: 'QA', text: `QA: ${stat.qaOwner}`},
-        {title: 'QA estimate', text: `QA: ${stat.qaEstimate}`},
-        {title: 'QA spent', text: `QA spent: ${stat.qaSpent}`},
+        {title: 'Sprint', text: `🏃 ${stat.sprintSpent}/${stat.sprintEstimate}`},
+        {title: 'QA', text: `@${stat.qaOwner} 🔎 ${stat.qaSpent}/${stat.qaEstimate}`}
       ];
     });
   }
