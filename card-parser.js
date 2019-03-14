@@ -22,6 +22,15 @@ Member.prototype = {
   },
   estimatedWork: function() {
     return this.estimatedDev() + this.estimatedQA();
+  },
+  actualDev: function() {
+    return this.devCards.reduce((total, card) => total + card.sprintSpent, 0);
+  },
+  actualQA: function() {
+    return this.qaCards.reduce((total, card) => total + card.qaSpent, 0);
+  },
+  actualWork: function() {
+    return this.actualDev() + this.actualQA()
   }
 };
 
