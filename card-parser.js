@@ -1,10 +1,10 @@
 function CardStat(card) {
   this.owner = (card.members[0] || {username: 'nobody'}).username;
-  this.sprintEstimate = parseInt((/__Sprint estimate__:\s*(\d+)/.exec(card.desc) || [null, 0])[1]);
-  this.sprintSpent = parseInt((/__Sprint spent__:\s*(\d+)/.exec(card.desc) || [null, 0])[1]);
-  this.qaOwner = (/__QA__:\s*@(\w+)/.exec(card.desc) || [null, 'nobody'])[1];
-  this.qaEstimate = parseInt((/__QA estimate__:\s*(\d+)/.exec(card.desc) || [null, 0])[1]);
-  this.qaSpent = parseInt((/__QA spent__:\s*(\d+)/.exec(card.desc) || [null, 0])[1]);
+  this.sprintEstimate = parseInt((/__Sprint estimate__:\s*(\d+)/i.exec(card.desc) || [null, 0])[1]);
+  this.sprintSpent = parseInt((/__Sprint spent__:\s*(\d+)/i.exec(card.desc) || [null, 0])[1]);
+  this.qaOwner = (/__QA__:\s*@(\w+)/i.exec(card.desc) || [null, 'nobody'])[1];
+  this.qaEstimate = parseInt((/__QA estimate__:\s*(\d+)/i.exec(card.desc) || [null, 0])[1]);
+  this.qaSpent = parseInt((/__QA spent__:\s*(\d+)/i.exec(card.desc) || [null, 0])[1]);
 }
 
 function Member(name) {
