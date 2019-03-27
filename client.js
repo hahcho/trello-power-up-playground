@@ -32,13 +32,49 @@ __Total estimate__: _Total hours estimate_
 __Total Spent__: _Total hours spent_
 `;
 
-function addNewTask(listId) {
+var ADHOC_CARD_TEMPLATE = `
+# What
+
+# Why
+
+# Engineering
+
+__PR__: _Link to the GitHub pull request after the task has been implemented_
+
+__Sprint spent__: _Total hours spent on the task_
+
+__QA Spent__: _Total hours spent in QA_
+
+__Total Spent__: _Total hours spent_
+`;
+
+function createCard(template, listId) {
   Trello.post('/cards/', {
     name: 'New card',
-    desc: CARD_TEMPLATE,
+    desc: template,
     idList: listId,
     pos: 'top'
   });
+}
+
+function addNewTask(t, template) {
+  t.lists('id', 'name').then(function(lists) {
+    var list = lists.find(list => {
+      return list.name === 'Ready For Development' 
+    });
+
+    if (Trello.authorized()) {
+      return createCard(template, list.id);
+    }
+
+    Trello.authorize({
+      type: 'popup',
+      name: 'Authorize Power Up to Add Cards',
+      scope: {read: true, write: true},
+      success: () => createCard(template, list.id),
+      error: console.log
+    });
+  })
 }
 
 TrelloPowerUp.initialize({
@@ -47,23 +83,13 @@ TrelloPowerUp.initialize({
       {
         text: 'Add New Task',
         callback: function(t){
-          t.lists('id', 'name').then(function(lists) {
-            var list = lists.find(list => {
-              return list.name === 'Ready For Development' 
-            });
-
-            if (Trello.authorized()) {
-              return addNewTask(list.id);
-            }
-
-            Trello.authorize({
-              type: 'popup',
-              name: 'Authorize Power Up to Add Cards',
-              scope: {read: true, write: true},
-              success: () => addNewTask(list.id),
-              error: console.log
-            });
-          })
+          t.popup({
+            title: 'Add New Task',
+            items: [
+              {text: 'Add New Task', callback: (t) => addNewTask(t, CARD_TEMPLATE)},
+              {text: 'Add New AdHoc Task', callback: (t) => addNewTask(t, ADHOC_CARD_TEMPLATE)},
+            ]
+          });
         }
       },
       {
