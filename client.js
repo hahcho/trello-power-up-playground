@@ -3,33 +3,23 @@ var Promise = TrelloPowerUp.Promise;
 var CARD_TEMPLATE = `
 # What
 
-_Describe in detail what is the goal of the task and what we want to achieve._
-
-- Feature flags
-- Analytics
-- Tooltips
-
 # Why
-
-_Describe why are we doing this task. What problem are we solving to our customers or business._
 
 # Design
 
-_List all links to the finished design._
-
 # Engineering
 
-__PR__: _Link to the GitHub pull request after the task has been implemented_
+__PR__: 
 
-__Sprint estimate__: _Estimate how long the task will take to be completed_
-__Sprint spent__: _Total hours spent on the task_
+__Sprint estimate__: 
+__Sprint spent__: 
 
-__QA__: _The person responsible for doing QA_
-__QA Estimate__: _Total hours estimated for QA_
-__QA Spent__: _Total hours spent in QA_
+__QA__: 
+__QA Estimate__: 
+__QA Spent__: 
 
-__Total estimate__: _Total hours estimate_
-__Total Spent__: _Total hours spent_
+__Total estimate__: 
+__Total Spent__: 
 `;
 
 var ADHOC_CARD_TEMPLATE = `
@@ -39,13 +29,13 @@ var ADHOC_CARD_TEMPLATE = `
 
 # Engineering
 
-__PR__: _Link to the GitHub pull request after the task has been implemented_
+__PR__: 
 
-__Sprint spent__: _Total hours spent on the task_
+__Sprint spent__: 
 
-__QA Spent__: _Total hours spent in QA_
+__QA Spent__: 
 
-__Total Spent__: _Total hours spent_
+__Total Spent__: 
 `;
 
 function createCard(template, listId) {
