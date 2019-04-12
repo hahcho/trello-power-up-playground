@@ -1,7 +1,7 @@
 var t = TrelloPowerUp.iframe();
 
 t.render(function(){
-  t.cards('name', 'desc', 'members').then(function(cards) {
+  t.cards('name', 'desc', 'members', 'labels').then(function(cards) {
     var summary = new CardsSummary(cards.map((card) => new CardStat(card)));
     
     var table = document.getElementById('estimates');
@@ -12,7 +12,8 @@ t.render(function(){
         <tr>
           <td>${member.name}</td>
           <td>${member.estimatedDev()}</td>
-          <td>${member.actualDev()}</td>
+          <td>${member.actualPlannedDev()}</td>
+          <td>${member.actualAdHocDev()}</td>
           <td>${member.estimatedQA()}</td>
           <td>${member.actualQA()}</td>
           <td>${member.estimatedWork()}</td>

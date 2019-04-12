@@ -5,6 +5,7 @@ function CardStat(card) {
   this.qaOwner = (/__QA__:\s*@(\w+)/i.exec(card.desc) || [null, 'nobody'])[1];
   this.qaEstimate = parseInt((/__QA estimate__:\s*(\d+)/i.exec(card.desc) || [null, 0])[1]);
   this.qaSpent = parseInt((/__QA spent__:\s*(\d+)/i.exec(card.desc) || [null, 0])[1]);
+  this.isAdhoc = card.labels.filter(label => label.name === 'ad-hoc').length > 0;
 }
 
 function Member(name) {
@@ -14,8 +15,14 @@ function Member(name) {
 }
 
 Member.prototype = {
+  plannedDevCards: function() {
+    return this.devCards.filter(card => !card.isAdhoc);
+  },
+  adHocDevCards: function() {
+    return this.devCards.filter(card => card.isAdhoc);
+  },
   estimatedDev: function() {
-    return this.devCards.reduce((total, card) => total + card.sprintEstimate, 0);
+    return this.plannedDevCards().reduce((total, card) => total + card.sprintEstimate, 0);
   },
   estimatedQA: function() {
     return this.qaCards.reduce((total, card) => total + card.qaEstimate, 0);
@@ -23,14 +30,17 @@ Member.prototype = {
   estimatedWork: function() {
     return this.estimatedDev() + this.estimatedQA();
   },
-  actualDev: function() {
-    return this.devCards.reduce((total, card) => total + card.sprintSpent, 0);
+  actualPlannedDev: function() {
+    return this.plannedDevCards().reduce((total, card) => total + card.sprintSpent, 0);
+  },
+  actualAdHocDev: function() {
+    return this.adHocDevCards().reduce((total, card) => total + card.sprintSpent, 0);
   },
   actualQA: function() {
     return this.qaCards.reduce((total, card) => total + card.qaSpent, 0);
   },
   actualWork: function() {
-    return this.actualDev() + this.actualQA()
+    return this.actualPlannedDev() + this.actualAdHocDev() + this.actualQA();
   }
 };
 
