@@ -30,7 +30,6 @@ var ADHOC_CARD_TEMPLATE = `
 # Engineering
 
 __PR__: 
-
 __Sprint spent__: 
 
 __QA Spent__: 
@@ -95,7 +94,7 @@ TrelloPowerUp.initialize({
     ];
   },
   'card-badges': function(t, options){
-    return t.card('name', 'desc', 'members').then(function(card) {
+    return t.card('name', 'desc', 'members', 'labels').then(function(card) {
       var stat = new CardStat(card);
 
       return [
