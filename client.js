@@ -46,24 +46,18 @@ function createCard(template, listId) {
   });
 }
 
-function addNewTask(t, template) {
-  t.lists('id', 'name').then(function(lists) {
-    var list = lists.find(list => {
-      return list.name === 'Ready For Development' 
-    });
+function addNewTask(list, template) {
+  if (Trello.authorized()) {
+    return createCard(template, list.id);
+  }
 
-    if (Trello.authorized()) {
-      return createCard(template, list.id);
-    }
-
-    Trello.authorize({
-      type: 'popup',
-      name: 'Authorize Power Up to Add Cards',
-      scope: {read: true, write: true},
-      success: () => createCard(template, list.id),
-      error: console.log
-    });
-  })
+  Trello.authorize({
+    type: 'popup',
+    name: 'Authorize Power Up to Add Cards',
+    scope: {read: true, write: true},
+    success: () => createCard(template, list.id),
+    error: console.log
+  });
 }
 
 TrelloPowerUp.initialize({
@@ -80,10 +74,12 @@ TrelloPowerUp.initialize({
     }];
   },
   'list-actions': function(t) {
-      return [
-        {text: 'Add New Task', callback: (t) => addNewTask(t, CARD_TEMPLATE)},
-        {text: 'Add New AdHoc Task', callback: (t) => addNewTask(t, ADHOC_CARD_TEMPLATE)}
-      ]
+      return t.list('name', 'id').then(function(list) {
+        return [
+          {text: 'Add New Task', callback: () => addNewTask(list, CARD_TEMPLATE)},
+          {text: 'Add New AdHoc Task', callback: () => addNewTask(list, ADHOC_CARD_TEMPLATE)}
+        ]
+      });
   },
   'card-badges': function(t, options){
     return t.card('name', 'desc', 'members', 'labels').then(function(card) {
