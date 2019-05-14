@@ -68,30 +68,22 @@ function addNewTask(t, template) {
 
 TrelloPowerUp.initialize({
   'board-buttons': function(t, options){
-    return [
-      {
-        text: 'Add New Task',
-        callback: function(t){
-          t.popup({
-            title: 'Add New Task',
-            items: [
-              {text: 'Add New Task', callback: (t) => addNewTask(t, CARD_TEMPLATE)},
-              {text: 'Add New AdHoc Task', callback: (t) => addNewTask(t, ADHOC_CARD_TEMPLATE)},
-            ]
-          });
-        }
-      },
-      {
-        text: 'Summary',
-        callback: function(t){
-          return t.modal({
-            url: './modal.html',
-            height: 500,
-            title: 'Sprint summary',
-          })
-        }
+    return [{
+      text: 'Summary',
+      callback: function(t){
+        return t.modal({
+          url: './modal.html',
+          height: 500,
+          title: 'Sprint summary',
+        })
       }
-    ];
+    }];
+  },
+  'list-actions': function(t) {
+      return [
+        {text: 'Add New Task', callback: (t) => addNewTask(t, CARD_TEMPLATE)},
+        {text: 'Add New AdHoc Task', callback: (t) => addNewTask(t, ADHOC_CARD_TEMPLATE)}
+      ]
   },
   'card-badges': function(t, options){
     return t.card('name', 'desc', 'members', 'labels').then(function(card) {
