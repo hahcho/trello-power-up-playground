@@ -1,6 +1,8 @@
 var t = TrelloPowerUp.iframe();
 
 t.render(function(){
+  console.log(t.lists('*').then(function(data){ console.log('listttt', data); }));
+
   t.cards('name', 'desc', 'members', 'labels').then(function(cards) {
     var summary = new CardsSummary(cards.map((card) => new CardStat(card)));
     
